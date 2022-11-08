@@ -12,7 +12,8 @@ fn main() {
             let mut inst = Instance::default();
             inst.x = ((row - 1) * inst.width) as i32;
             inst.y = ((i - 1) * inst.height) as i32;
-            inst.screenshot(format!("Screenshot(row: {}, col: {}", row, i));
+            inst.screenshot(format!("Screenshot(row: {}, col: {}", row, i))
+                .map_err(|err| println!("{:?}", err)).ok();
         }
     }
 }

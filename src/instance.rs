@@ -27,14 +27,16 @@ impl Default for Instance {
 }
 
 impl Instance {
-    pub fn screenshot(&self, file_name: String) {
+    pub fn screenshot(&self, file_name: String) -> Result<(), std::io::Error> {
         let screens = Screen::all().unwrap();
         let primary_screen = screens[0];
 
         let image = primary_screen.capture_area(self.x, self.y, self.width, self.height).unwrap();
         let buffer = image.buffer();
+        fs::create_dir_all("screenshots")?;
         fs::write(format!("screenshots/{}.png", file_name), buffer).unwrap();
         println!("Screenshotted (x: {}, y: {}, width: {}, height: {}", self.x, self.y, self.width, self.height);
+        Ok(())
     }
 
     // pub fn get_instance_number(&self) -> u32 {

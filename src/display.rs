@@ -16,8 +16,14 @@ impl Default for Display {
 
         let conf = Ini::load_from_file("conf.ini").unwrap();
         let settings = conf.section(Some("Settings")).unwrap();
-        let u_rows: u32 = settings.get("rows").unwrap().parse().unwrap();
-        let u_cols: u32 = settings.get("cols").unwrap().parse().unwrap();
+        let u_rows: u32 = settings.get("rows")
+            .unwrap()
+            .parse()
+            .unwrap();
+        let u_cols: u32 = settings.get("cols")
+            .unwrap()
+            .parse()
+            .unwrap();
         Display {
             width: primary_screen.display_info.width,
             height: primary_screen.display_info.height,
