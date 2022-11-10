@@ -45,9 +45,16 @@ impl Instance {
     pub fn launch_predict_script(&self) {
         // https://doc.rust-lang.org/std/process/struct.Command.html
         // https://www.tutorialspoint.com/python/python_command_line_arguments.htm (pass in sc_dir, width, height)
-        // arg order is thing.py sc_dir, width, height
+        // arg order is thing.py sc_dir, width, height, x, y
         Command::new("python3")
-            .args(["src/predict.py", &self.sc_dir, &self.width.to_string(), &self.height.to_string()])
+            .args([
+                "src/predict.py", 
+                &self.sc_dir, 
+                &self.width.to_string(), 
+                &self.height.to_string(),
+                &self.x.to_string(),
+                &self.y.to_string()
+                ])
             .spawn()
             .expect("Failed");
 
