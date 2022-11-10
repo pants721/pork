@@ -9,4 +9,4 @@ edition = "2021"
 [dependencies]
 screenshots = "0.4.5"
 rust-ini = "0.18"
-tensorflow = "0.19.1"
+pyo3 = { version = "0.17.3", features = ["extension-module"] }

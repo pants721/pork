@@ -29,7 +29,7 @@ impl Default for Instance {
 impl Instance {
     pub fn screenshot(&self, file_name: String) -> Result<(), std::io::Error> {
         let screens = Screen::all().unwrap();
-        let primary_screen = screens[0];
+        let primary_screen = screens[1];
         let image = primary_screen.capture_area(self.x, self.y, self.width, self.height).unwrap();
         let buffer = image.buffer();
         fs::create_dir_all("screenshots")?;
