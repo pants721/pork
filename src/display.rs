@@ -1,12 +1,28 @@
 extern crate ini;
 use ini::Ini;
 use screenshots::Screen;
+use crate::Instance;
 
 pub struct Display {
     pub width: u32,
     pub height: u32,
     pub rows: u32,
     pub cols: u32,
+}
+
+impl Display {
+    pub fn screenshot_instances(&self) {
+        for row in 1..self.rows + 1 {
+            for col in 1..self.cols + 1 {
+                let mut inst = Instance::default();
+                inst.x = ((col - 1) * inst.width) as i32;
+                inst.y = ((row - 1) * inst.height) as i32;
+                inst.number = col + ((row - 1) * 3);
+                inst.screenshot()
+                    .map_err(|err| println!("{:?}", err)).ok();
+            }
+        }
+    }
 }
 
 impl Default for Display {

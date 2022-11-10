@@ -1,4 +1,5 @@
 use std::fs;
+use std::process::Command;
 use screenshots::Screen;
 use crate::Display;
 
@@ -8,6 +9,7 @@ pub struct Instance {
     pub width: u32,
     pub height: u32,
     pub number: u32,
+    pub sc_dir: String,
 }
 
 impl Default for Instance {
@@ -22,19 +24,32 @@ impl Default for Instance {
             width: display_width / display_cols,
             height: display_height / display_rows,
             number: 0,
+            sc_dir: String::from(""),
         }
     }
 }
 
 impl Instance {
-    pub fn screenshot(&self, file_name: String) -> Result<(), std::io::Error> {
+    pub fn screenshot(&mut self) -> Result<(), std::io::Error> {
         let screens = Screen::all().unwrap();
         let primary_screen = screens[1];
         let image = primary_screen.capture_area(self.x, self.y, self.width, self.height).unwrap();
         let buffer = image.buffer();
+        self.sc_dir = format!("screenshots/Instance-{}.png", self.number);
         fs::create_dir_all("screenshots")?;
-        fs::write(format!("screenshots/{}.png", file_name), buffer).unwrap();
-        println!("Screenshotted Instance {} (x: {}, y: {}, width: {}, height: {}", self.number, self.x, self.y, self.width, self.height);
+        fs::write(&self.sc_dir, buffer).unwrap();
+        self.launch_predict_script();
+        println!("Screenshotted Instance {} (x: {}, y: {}, width: {}, height: {})", self.number, self.x, self.y, self.width, self.height);
         Ok(())
+    }
+    pub fn launch_predict_script(&self) {
+        // https://doc.rust-lang.org/std/process/struct.Command.html
+        // https://www.tutorialspoint.com/python/python_command_line_arguments.htm (pass in sc_dir, width, height)
+        // arg order is thing.py sc_dir, width, height
+        Command::new("python3")
+            .args(["src/predict.py", &self.sc_dir, &self.width.to_string(), &self.height.to_string()])
+            .spawn()
+            .expect("Failed");
+
     }
 }

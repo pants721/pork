@@ -1,4 +1,6 @@
+/.vscode
 /target
 Cargo.lock
 /screenshots
 /images
+/image_model
