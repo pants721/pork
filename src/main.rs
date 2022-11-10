@@ -1,5 +1,3 @@
-extern crate tensorflow;
-
 mod display;
 mod instance;
 
