@@ -1,17 +1,22 @@
 mod display;
 mod instance;
 
-use std::process;
 
 use display::Display;
 use instance::Instance;
-use inputbot::KeybdKey::*;
+#[cfg(target_os = "windows")]
+use std::{env, process};
+#[cfg(target_os = "windows")]
+use inputbot::{KeySequence, KeybdKey::*, MouseButton::*};
 
 
 fn main() {
     let display = Display::default();
-    HKey.bind(move || display.screenshot_instances());
-    QKey.bind(|| process::exit(0));
-    inputbot::handle_input_events();
+    #[cfg(target_os = "windows")] {
+        QKey.bind(|| process::exit(0));
+        HKey.bind(move || display.run());
+        inputbot::handle_input_events();
+    }
+    #[cfg(target_os = "macos")] {display.run()}
 }
 

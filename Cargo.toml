@@ -8,5 +8,9 @@ edition = "2021"
 
 [dependencies]
 screenshots = "0.4.5"
+opencv = "0.73"
+image = "0.24.5"
 rust-ini = "0.18"
+enigo = "0.0.14"
+[target.'cfg(target = "windows")'.dependencies]
 inputbot = "0.5"
