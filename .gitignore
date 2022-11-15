@@ -4,3 +4,6 @@ Cargo.lock
 /screenshots
 /images
 /image_model
+src/model.ipynb
+/test
+blue.py
