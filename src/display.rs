@@ -21,7 +21,9 @@ pub struct Display {
 impl Display {
     pub fn run(&self) {
         /*! Iterates through each instance, screenshots them, and runs them*/
+        // Stores thread JoinHandles in thread_vec
         let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
+        // Timer
         let start = Instant::now();
         for row in 1..=self.rows {
             for col in 1..=self.cols {
@@ -34,6 +36,7 @@ impl Display {
             }
         }
 
+        // Joins all threads in array
         for thread in thread_vec {
             thread.join().unwrap();
         }
