@@ -1,15 +1,26 @@
-use std::fs;
-use enigo::*;
-use screenshots::Screen;
 use crate::Display;
-use opencv::{imgproc, prelude::*, imgcodecs, core::{in_range, count_non_zero}};
+use enigo::{Enigo, MouseControllable};
+use opencv::{
+    core::{count_non_zero, in_range},
+    imgcodecs, imgproc,
+    prelude::*,
+};
+use screenshots::Screen;
+use std::fs;
 
+/// Struct for instance object
 pub struct Instance {
+    /// Top left x coordinate
     pub x: i32,
+    /// Top left y coordinate
     pub y: i32,
+    /// Instance width
     pub width: u32,
+    /// Instance height
     pub height: u32,
+    /// Instance number
     pub number: u32,
+    /// Path to screenshot of insance
     pub sc_dir: String,
 }
 
@@ -19,34 +30,46 @@ impl Default for Instance {
         let display_height = Display::default().height;
         let display_cols = Display::default().cols;
         let display_rows = Display::default().rows;
-        Instance {
+        Self {
             x: 0,
             y: 0,
             width: display_width / display_cols,
             height: display_height / display_rows,
             number: 0,
-            sc_dir: String::from(""),
+            sc_dir: String::new(),
         }
     }
 }
 
 impl Instance {
-    pub fn screenshot(&mut self) -> Result<(), std::io::Error> {
+    pub fn screenshot(&mut self) {
+        /*!
+        Screenshots the instance
+        * Captures the area of (inst.x, inst.y, inst.width, inst.height)
+        */
         let screens = Screen::all().unwrap();
         let primary_screen = screens[0];
 
-        let image = primary_screen.capture_area(self.x, self.y, self.width, self.height).unwrap();
+        let image = primary_screen
+            .capture_area(self.x, self.y, self.width, self.height)
+            .unwrap();
         let buffer = image.buffer();
 
         self.sc_dir = format!("screenshots/Instance-{}.png", self.number);
-        fs::create_dir_all("screenshots")?;
+        fs::create_dir_all("screenshots").unwrap();
         fs::write(&self.sc_dir, buffer).unwrap();
-        println!("Screenshotted Instance {} (x: {}, y: {}, width: {}, height: {})", self.number, self.x, self.y, self.width, self.height);
-        Ok(())
+        println!(
+            "Screenshotted Instance {} (x: {}, y: {}, width: {}, height: {})",
+            self.number, self.x, self.y, self.width, self.height
+        );
     }
 
-    pub fn run(&self) -> Result<(), std::io::Error> {
-        let blue_threshold = 15.0;        
+    pub fn eval(&self) {
+        /*!
+        Casts a blue color mask over image, and calculates how much of the image is not 0
+        * Left clicks instance if blue_percent is > blue_threshold
+        */
+        let blue_threshold = 15.0;
 
         let mut enigo = Enigo::new();
 
@@ -61,15 +84,21 @@ impl Instance {
         in_range(&hsv_image, &lower_blue, &upper_blue, &mut hsv_mask).unwrap();
 
         // in opencv python, img.size returns img.width * img.height * 3????
-        let blue_ratio = count_non_zero(&hsv_mask).unwrap() as f64 / (img.size().unwrap().area()) as f64;
+        let blue_ratio =
+            f64::from(count_non_zero(&hsv_mask).unwrap()) / f64::from(img.size().unwrap().area());
         let blue_percent = blue_ratio * 100.0;
-        println!("{:?}", blue_percent);
-        if blue_percent >= blue_threshold {
+        println!("{:.2}%", blue_percent);
+        if blue_percent <= blue_threshold {
             let center_x = self.x + self.width as i32 / 2;
-            let center_y = self.y - self.height as i32 / 2;
+            let center_y = self.y + self.height as i32 / 2;
             enigo.mouse_move_to(center_x, center_y);
-            enigo.mouse_click(MouseButton::Left);
+            // enigo.mouse_click(MouseButton::Left);
         }
-        Ok(())
+    }
+
+    pub fn run(&mut self) {
+        /*!Screenshots and evaluates instance */
+        self.screenshot();
+        self.eval();
     }
 }
