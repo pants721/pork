@@ -7,3 +7,4 @@ Cargo.lock
 src/model.ipynb
 /test
 blue.py
+vcenv.ps1

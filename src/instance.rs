@@ -1,5 +1,5 @@
 use crate::Display;
-use enigo::{Enigo, MouseControllable};
+use enigo::{Enigo, MouseButton, MouseControllable};
 use opencv::{
     core::{count_non_zero, in_range},
     imgcodecs, imgproc,
@@ -48,7 +48,7 @@ impl Instance {
         * Captures the area of (inst.x, inst.y, inst.width, inst.height)
         */
         let screens = Screen::all().unwrap();
-        let primary_screen = screens[0];
+        let primary_screen = screens[1];
 
         let image = primary_screen
             .capture_area(self.x, self.y, self.width, self.height)
@@ -69,7 +69,7 @@ impl Instance {
         Casts a blue color mask over image, and calculates how much of the image is not 0
         * Left clicks instance if blue_percent is > blue_threshold
         */
-        let blue_threshold = 15.0;
+        let blue_threshold = 12.0;
 
         let mut enigo = Enigo::new();
 
@@ -92,7 +92,7 @@ impl Instance {
             let center_x = self.x + self.width as i32 / 2;
             let center_y = self.y + self.height as i32 / 2;
             enigo.mouse_move_to(center_x, center_y);
-            // enigo.mouse_click(MouseButton::Left);
+            enigo.mouse_click(MouseButton::Left);
         }
     }
 

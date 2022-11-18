@@ -5,16 +5,16 @@ use display::Display;
 use instance::Instance;
 
 #[cfg(target_os = "windows")]
-use inputbot::{KeySequence, KeybdKey::*, MouseButton::*};
+use inputbot::KeybdKey::*;
 #[cfg(target_os = "windows")]
-use std::{env, process};
+use std::process;
 
 fn main() {
     let display = Display::default();
     #[cfg(target_os = "windows")]
     {
         QKey.bind(|| process::exit(0));
-        HKey.bind(move || display.run());
+        PKey.bind(move || display.run());
         inputbot::handle_input_events();
     }
     #[cfg(target_os = "macos")]

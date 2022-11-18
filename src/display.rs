@@ -5,7 +5,6 @@ use ini::Ini;
 use screenshots::Screen;
 use std::{thread, time::Instant};
 
-
 /// Struct for display object
 pub struct Display {
     // Screen width
@@ -48,7 +47,7 @@ impl Display {
 impl Default for Display {
     fn default() -> Self {
         let screens = Screen::all().unwrap();
-        let primary_screen = screens[0];
+        let primary_screen = screens[1];
 
         let conf = Ini::load_from_file("conf.ini").unwrap();
         let settings = conf.section(Some("Settings")).unwrap();

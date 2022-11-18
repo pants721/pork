@@ -4,15 +4,14 @@ authors = ["Lucas Newcomb <lucasnewcomb721@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
 repository = "https://github.com/pants721/pratt"
-license_file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 screenshots = "0.4.5"
-opencv = "0.74"
+opencv = "0.74.0"
 image = "0.24.5"
 rust-ini = "0.18"
 enigo = "0.0.14"
-[target.'cfg(target = "windows")'.dependencies]
+[target.'cfg(target_os = "windows")'.dependencies]
 inputbot = "0.5"
