@@ -8,19 +8,12 @@ use opencv::{
 use screenshots::Screen;
 use std::fs;
 
-/// Struct for instance object
 pub struct Instance {
-    /// Top left x coordinate
     pub x: i32,
-    /// Top left y coordinate
     pub y: i32,
-    /// Instance width
     pub width: u32,
-    /// Instance height
     pub height: u32,
-    /// Instance number
     pub number: u32,
-    /// Path to screenshot of insance
     pub sc_dir: String,
 }
 
@@ -43,10 +36,6 @@ impl Default for Instance {
 
 impl Instance {
     pub fn screenshot(&mut self) {
-        /*!
-        Screenshots the instance
-        * Captures the area of (inst.x, inst.y, inst.width, inst.height)
-        */
         let screens = Screen::all().unwrap();
         let primary_screen = screens[1];
 
@@ -65,10 +54,6 @@ impl Instance {
     }
 
     pub fn eval(&self) {
-        /*!
-        Casts a blue color mask over image, and calculates how much of the image is not 0
-        * Left clicks instance if blue_percent is > blue_threshold
-        */
         let blue_threshold = 12.0;
 
         let mut enigo = Enigo::new();
@@ -97,7 +82,6 @@ impl Instance {
     }
 
     pub fn run(&mut self) {
-        /*!Screenshots and evaluates instance */
         self.screenshot();
         self.eval();
     }

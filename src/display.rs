@@ -5,7 +5,6 @@ use ini::Ini;
 use screenshots::Screen;
 use std::{thread, time::Instant};
 
-/// Struct for display object
 pub struct Display {
     // Screen width
     pub width: u32,
@@ -19,7 +18,6 @@ pub struct Display {
 
 impl Display {
     pub fn run(&self) {
-        /*! Iterates through each instance, screenshots them, and runs them*/
         // Stores thread JoinHandles in thread_vec
         let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
         // Timer
