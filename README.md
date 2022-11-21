@@ -24,7 +24,7 @@ Opencv is a requirement for this project. Find instructions for installing it [h
 ```shell
 git clone https://github.com/pants721/pork pork
 cd pork
-cargo build
+cargo build --release
 ```
 
 ### Run Pork
