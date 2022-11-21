@@ -35,7 +35,7 @@ impl Default for Instance {
 }
 
 impl Instance {
-    pub fn screenshot(&mut self) {
+    fn screenshot(&mut self) {
         let screens = Screen::all().unwrap();
         let primary_screen = screens[0];
 
@@ -53,7 +53,7 @@ impl Instance {
         );
     }
 
-    pub fn eval(&self) {
+    fn eval(&self) {
         let blue_threshold = 12.0;
 
         let mut enigo = Enigo::new();

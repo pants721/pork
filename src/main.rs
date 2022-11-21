@@ -5,7 +5,9 @@ mod instance;
 use cmds::{help, welcome};
 use display::Display;
 use instance::Instance;
-use std::{env, thread};
+use std::env;
+#[cfg(target_os = "windows")]
+use std::thread;
 
 #[cfg(target_os = "windows")]
 use inputbot::KeybdKey::*;
