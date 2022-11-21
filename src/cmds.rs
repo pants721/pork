@@ -58,12 +58,12 @@ pub fn create_ini() {
     conf.with_section(Some("Settings"))
         .set("rows", &rows)
         .set("cols", &columns);
-    conf.write_to_file("conf.ini").unwrap();
+    conf.write_to_file("conf.ini").expect("Error writing to conf.ini");
 }
 
 fn welcome_msg() {
     println!("{}", WELCOME_TO_PORK.green());
-    println!("Welcome to Pork!");
+    println!("Welcome to Pork! 🐷");
     println!("Type 'cargo run help' for a list of commands.");
 }
 

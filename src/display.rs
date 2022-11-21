@@ -35,9 +35,9 @@ impl Display {
             }
         }
 
-        // Joins all threads in vec 
+        // Joins all threads in vec
         for thread in thread_vec {
-            thread.join().unwrap();
+            thread.join().expect("Error joining thread");
         }
         let dur = start.elapsed();
         println!("Time elapsed in Display.run(): {dur:?}");
@@ -46,11 +46,13 @@ impl Display {
 
 impl Default for Display {
     fn default() -> Self {
-        let screens = Screen::all().unwrap();
+        let screens = Screen::all().expect("Error getting screens");
         let primary_screen = screens[0];
 
-        let conf = Ini::load_from_file("conf.ini").unwrap();
-        let settings = conf.section(Some("Settings")).unwrap();
+        let conf = Ini::load_from_file("conf.ini").expect("Error loading conf.ini");
+        let settings = conf
+            .section(Some("Settings"))
+            .expect("Error loading Settings section");
         let u_rows: u32 = settings.get("rows").unwrap().parse().unwrap();
         let u_cols: u32 = settings.get("cols").unwrap().parse().unwrap();
         Self {
