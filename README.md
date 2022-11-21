@@ -8,7 +8,7 @@ As of now, there is no proper integration between the two and Pork handles reset
 Pork was built with a standard 1920x1080 resolution and 3x3 instance setup in mind.\
 Any other configurations cannot be guaranteed to work.
 
-For more information on how Pork works, check out the [info page](INFO.md)
+For more information on how Pork works, check out the [info page](INFO.md).
 
 ## Technologies Used
 
