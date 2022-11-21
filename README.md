@@ -1,5 +1,5 @@
-# Pratt
-A project to efficently reset Minecraft seeds with Keras for speedrunning purposes
+# Pork
+A project to efficently reset Minecraft seeds with opencv for speedrunning purposes
 
 ## Technologies Used
 - Rust
