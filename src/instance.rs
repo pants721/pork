@@ -37,7 +37,7 @@ impl Default for Instance {
 impl Instance {
     pub fn screenshot(&mut self) {
         let screens = Screen::all().unwrap();
-        let primary_screen = screens[1];
+        let primary_screen = screens[0];
 
         let image = primary_screen
             .capture_area(self.x, self.y, self.width, self.height)
@@ -77,7 +77,7 @@ impl Instance {
             let center_x = self.x + self.width as i32 / 2;
             let center_y = self.y + self.height as i32 / 2;
             enigo.mouse_move_to(center_x, center_y);
-            enigo.mouse_click(MouseButton::Left);
+            // enigo.mouse_click(MouseButton::Left);
         }
     }
 

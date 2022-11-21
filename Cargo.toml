@@ -1,9 +1,9 @@
 [package]
-name = "pratt"
+name = "pork"
 authors = ["Lucas Newcomb <lucasnewcomb721@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
-repository = "https://github.com/pants721/pratt"
+repository = "https://github.com/pants721/pork"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -13,5 +13,13 @@ opencv = "0.74.0"
 image = "0.24.5"
 rust-ini = "0.18"
 enigo = "0.0.14"
+cfonts = "1"
+owo-colors = "3.5.0"
+terminal-link = "0.1.0"
 [target.'cfg(target_os = "windows")'.dependencies]
 inputbot = "0.5"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"

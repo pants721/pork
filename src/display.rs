@@ -1,5 +1,3 @@
-extern crate ini;
-
 use crate::Instance;
 use ini::Ini;
 use screenshots::Screen;
@@ -45,7 +43,7 @@ impl Display {
 impl Default for Display {
     fn default() -> Self {
         let screens = Screen::all().unwrap();
-        let primary_screen = screens[1];
+        let primary_screen = screens[0];
 
         let conf = Ini::load_from_file("conf.ini").unwrap();
         let settings = conf.section(Some("Settings")).unwrap();

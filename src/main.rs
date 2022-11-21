@@ -1,8 +1,11 @@
+mod cmds;
 mod display;
 mod instance;
 
+use cmds::{help, welcome};
 use display::Display;
 use instance::Instance;
+use std::{env, thread};
 
 #[cfg(target_os = "windows")]
 use inputbot::KeybdKey::*;
@@ -10,15 +13,37 @@ use inputbot::KeybdKey::*;
 use std::process;
 
 fn main() {
-    let display = Display::default();
-    #[cfg(target_os = "windows")]
-    {
-        QKey.bind(|| process::exit(0));
-        PKey.bind(move || display.run());
-        inputbot::handle_input_events();
+    let arg = env::args().nth(1).unwrap_or_default();
+
+    match arg.as_ref() {
+        "help" | "h" => help(),
+        "run" | "r" => run(),
+        "" => welcome(),
+        _ => println!("Invalid command!"),
     }
-    #[cfg(target_os = "macos")]
-    {
+}
+
+#[cfg(target_os = "macos")]
+fn run() {
+    let display = Display::default();
+    for _ in 0..20 {
         display.run();
     }
+}
+
+#[cfg(target_os = "windows")]
+fn run() {
+    let running: bool;
+    let display = Display::default();
+    QKey.bind(|| process::exit(0));
+    IKey.bind(|| running = false);
+
+    PKey.bind(|| {
+        while running {
+            let display = Display::default();
+            let run_thread = thread::spawn(move || display.run());
+            run_thread.join().unwrap();
+        }
+    });
+    inputbot::handle_input_events();
 }
