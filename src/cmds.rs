@@ -64,7 +64,7 @@ pub fn create_ini() {
 fn welcome_msg() {
     println!("{}", WELCOME_TO_PORK.green());
     println!("Welcome to Pork!");
-    println!("Type 'pork help' for a list of commands.");
+    println!("Type 'cargo run help' for a list of commands.");
 }
 
 pub fn welcome() {
