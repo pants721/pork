@@ -165,8 +165,11 @@ First we define `blue_threshold`. This is the minimum percentage of blue that th
 After this, we convert out image from Opencv's default colorspace BGR to HSV. We then remove all pixels that don't fall within our hsv range using the `in_range()` function.
 
 HSV Filtered Screenshot
+
 ![HSV Filtered Screenshot](assets/info_images/example2.png)
+
 Screenshot Filtered for Viewing
+
 ![Output Filtered Screenshot](assets/info_images/example3.png)
 
 To find the total percentage of the screen that is blue, we find the ratio of non-zero pixels in our hsv mask to the total image area. Multiplying this by 100, we have the percentage of the screen that is blue.
