@@ -1,4 +1,4 @@
-# Pork
+# Pork <img src="assets/Porkchop.webp" height="30">
 
 A project to efficently reset Minecraft seeds with opencv for speedrunning purposes.
 
