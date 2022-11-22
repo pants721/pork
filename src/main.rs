@@ -2,7 +2,7 @@ mod cmds;
 mod display;
 mod instance;
 
-use cmds::{help, welcome};
+use cmds::{check_ini, help, welcome};
 use display::Display;
 use instance::Instance;
 use std::env;
@@ -27,6 +27,7 @@ fn main() {
 
 #[cfg(target_os = "macos")]
 fn run() {
+    check_ini();
     let display = Display::default();
     for _ in 0..20 {
         display.run();
@@ -35,6 +36,7 @@ fn run() {
 
 #[cfg(target_os = "windows")]
 fn run() {
+    check_ini();
     let running: bool;
     let display = Display::default();
     QKey.bind(|| process::exit(0));
