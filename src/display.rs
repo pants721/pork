@@ -1,7 +1,7 @@
 use crate::Instance;
 use ini::Ini;
 use screenshots::Screen;
-use std::{thread, time::Instant};
+use std::thread;
 
 pub struct Display {
     // Screen width
@@ -18,8 +18,6 @@ impl Display {
     pub fn run(&self) {
         // Stores thread JoinHandles in thread_vec
         let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
-        // Timer
-        let start = Instant::now();
         for row in 1..=self.rows {
             for col in 1..=self.cols {
                 let mut inst = Instance {
@@ -28,7 +26,7 @@ impl Display {
                     width: self.width / self.cols,
                     height: self.height / self.rows,
                     number: col + ((row - 1) * self.cols),
-                    sc_dir: String::new(),
+                    img: Vec::new(),
                 };
                 let inst_thread = thread::spawn(move || inst.run());
                 thread_vec.push(inst_thread);
@@ -37,10 +35,8 @@ impl Display {
 
         // Joins all threads in vec
         for thread in thread_vec {
-            thread.join().expect("Error joining thread");
+            thread.join().unwrap();
         }
-        let dur = start.elapsed();
-        println!("Time elapsed in Display.run(): {dur:?}");
     }
 }
 

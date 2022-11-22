@@ -31,34 +31,30 @@ fn warn() {
     );
 }
 
-fn check_ini() {
-    if path::Path::new("conf.ini").exists() {
-        println!("conf.ini exists!");
-    } else {
-        create_ini();
+pub fn check_ini() {
+    if !path::Path::new("conf.ini").exists() {
+        // println!("conf.ini exists!");
+        println!("It seems you haven't configured Pork yet. Let's do that now!");
+        println!("How many rows of instances do you have?");
+        let mut rows = String::new();
+        std::io::stdin()
+            .read_line(&mut rows)
+            .expect("Failed to read line");
+        rows.pop();
+        println!("How many columns of instances do you have?");
+        let mut columns = String::new();
+        std::io::stdin()
+            .read_line(&mut columns)
+            .expect("Failed to read line");
+        columns.pop();
+
+        let mut conf = Ini::new();
+        conf.with_section(Some("Settings"))
+            .set("rows", &rows)
+            .set("cols", &columns);
+        conf.write_to_file("conf.ini")
+            .expect("Error writing to conf.ini");
     }
-}
-
-pub fn create_ini() {
-    println!("It seems you haven't configured Pork yet. Let's do that now!");
-    println!("How many rows of instances do you have?");
-    let mut rows = String::new();
-    std::io::stdin()
-        .read_line(&mut rows)
-        .expect("Failed to read line");
-    rows.pop();
-    println!("How many columns of instances do you have?");
-    let mut columns = String::new();
-    std::io::stdin()
-        .read_line(&mut columns)
-        .expect("Failed to read line");
-    columns.pop();
-
-    let mut conf = Ini::new();
-    conf.with_section(Some("Settings"))
-        .set("rows", &rows)
-        .set("cols", &columns);
-    conf.write_to_file("conf.ini").expect("Error writing to conf.ini");
 }
 
 fn welcome_msg() {
