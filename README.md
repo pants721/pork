@@ -13,8 +13,8 @@ For more information on how Pork works, check out the [info page](INFO.md).
 
 ## Technologies Used
 
-- Rust
-- Opencv
+- [Rust](https://github.com/rust-lang/rust)
+- [Opencv](https://github.com/opencv/opencv)
 
 ## Installation
 
