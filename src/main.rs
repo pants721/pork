@@ -37,17 +37,12 @@ fn run() {
 #[cfg(target_os = "windows")]
 fn run() {
     check_ini();
-    let running: bool;
-    let display = Display::default();
     QKey.bind(|| process::exit(0));
-    IKey.bind(|| running = false);
 
-    PKey.bind(|| {
-        while running {
-            let display = Display::default();
-            let run_thread = thread::spawn(move || display.run());
-            run_thread.join().unwrap();
-        }
+    PKey.bind(|| loop {
+        let display = Display::default();
+        let run_thread = thread::spawn(move || display.run());
+        run_thread.join().unwrap();
     });
     inputbot::handle_input_events();
 }

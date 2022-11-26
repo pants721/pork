@@ -13,13 +13,14 @@ pub struct Instance {
     pub height: u32,
     pub number: u32,
     pub img: Vec<u8>,
+    pub path: String,
 }
 
 impl Instance {
     fn screenshot(&mut self) {
         let screens = Screen::all().expect("Error getting screens");
         // get the highest index of screens
-        let primary_screen = screens[screens.len() - 1];
+        let primary_screen = screens[1];
 
         let image = primary_screen
             .capture_area(self.x, self.y, self.width, self.height)
@@ -33,8 +34,8 @@ impl Instance {
         // );
     }
 
-    fn eval(&self) {
-        let blue_threshold = 12.0;
+    fn eval(&mut self) {
+        let blue_threshold = 7.5;
 
         let mut enigo = Enigo::new();
 

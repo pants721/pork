@@ -18,6 +18,7 @@ impl Display {
     pub fn run(&self) {
         // Stores thread JoinHandles in thread_vec
         let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
+
         for row in 1..=self.rows {
             for col in 1..=self.cols {
                 let mut inst = Instance {
@@ -27,9 +28,19 @@ impl Display {
                     height: self.height / self.rows,
                     number: col + ((row - 1) * self.cols),
                     img: Vec::new(),
+                    path: String::new(),
                 };
-                let inst_thread = thread::spawn(move || inst.run());
-                thread_vec.push(inst_thread);
+                inst.path = format!("D:/MultiMC/instances/inst{}/.minecraft", inst.number);
+                let hold_file = format!("{}{}", inst.path, "/hold.tmp");
+                // let preview_file = String::from(format!("{}{}", inst.path, "/preview.tmp"));
+                // let preview_file_contents = if std::path::Path::new(&preview_file).exists() {std::fs::read_to_string(preview_file).expect("Error reading preview file")} else {String::from("0")};
+                // println!("{:?}", preview_file_contents.parse::<u64>().unwrap());
+                // println!("{}: {}ms", inst.number, now.elapsed().as_millis());
+                if !std::path::Path::new(&hold_file).exists() {
+                    let inst_thread = thread::spawn(move || inst.run());
+                    thread_vec.push(inst_thread);
+                    // inst_thread.join().unwrap();
+                }
             }
         }
 
@@ -43,7 +54,7 @@ impl Display {
 impl Default for Display {
     fn default() -> Self {
         let screens = Screen::all().expect("Error getting screens");
-        let primary_screen = screens[0];
+        let primary_screen = screens[1];
 
         let conf = Ini::load_from_file("conf.ini").expect("Error loading conf.ini");
         let settings = conf
