@@ -38,7 +38,7 @@ impl Instance {
     pub fn eval(&mut self) {
         let use_open_cv = false;
         let blue_threshold = 5.0;
-        let biomes = vec!["beach", "ocean", "plains", "forest"];
+        let biomes = vec!["beach", "ocean"];
         let fringe_biomes = vec!["plains", "forest"];
 
         let log = format!("{}{}", self.path, "/logs/latest.log");
@@ -53,7 +53,7 @@ impl Instance {
             }
         }
         println!("{}", biome);
-        if !biomes.contains(&biome.as_str()) {
+        if !biomes.contains(&biome.as_str()) && !biomes.contains(&biome.as_str()) {
             self.reset();
         }
         if fringe_biomes.contains(&biome.as_str()) {

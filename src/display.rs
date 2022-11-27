@@ -12,13 +12,12 @@ pub struct Display {
     pub rows: u32,
     // Number of columns of instances, determined by user in conf.ini
     pub cols: u32,
+    // Vec of instances
+    pub instances: Vec<Instance>,
 }
 
 impl Display {
-    pub fn run(&self) {
-        // Stores thread JoinHandles in thread_vec
-        let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
-
+    fn get_instances(&mut self) {
         for row in 1..=self.rows {
             for col in 1..=self.cols {
                 let mut inst = Instance {
@@ -31,14 +30,25 @@ impl Display {
                     path: String::new(),
                 };
                 inst.path = format!("D:/MultiMC/instances/inst{}/.minecraft", inst.number);
-                let hold_file = format!("{}{}", inst.path, "/hold.tmp");
-                if !std::path::Path::new(&hold_file).exists() {
-                    let inst_thread = thread::spawn(move || inst.eval());
-                    thread_vec.push(inst_thread);
-                    std::thread::sleep(std::time::Duration::from_millis(15));
-                }
+                self.instances.push(inst);
             }
         }
+    }
+    pub fn run(&mut self) {
+        // Stores thread JoinHandles in thread_vec
+        let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
+
+        self.get_instances();
+
+        for inst in &self.instances {
+            let hold_file = format!("{}{}", inst.path, "/hold.tmp");
+            if !std::path::Path::new(&hold_file).exists() {
+                let inst_thread = thread::spawn(|| &inst.eval());
+                thread_vec.push(inst_thread);
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+
 
         // Joins all threads in vec
         for thread in thread_vec {
@@ -63,6 +73,7 @@ impl Default for Display {
             height: primary_screen.display_info.height,
             rows: u_rows,
             cols: u_cols,
+            instances: Vec::new(),
         }
     }
 }
