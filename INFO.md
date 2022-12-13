@@ -2,7 +2,7 @@
 
 ## How it started
 
-Pork intends to reset Minecraft seeds efficiently for speedrunning, without the use of a world-file read. The initial approach to this project was using Python and TensorFlow Keras to feed screenshots of each instance into an image recognition machine learning model. This solution was far too inefficient for the project and did not find success in real-time usage. Once it was realized that efficiency was paramount for the project, we moved from a Python-based codebase to a Rust-based codebase. Using the Rust TensorFlow bindings the language provided didn't fit our project, so we looked for a new solution. We realized that the majority of good seeds have a high percentage of blue pixels because of their oceans. Using Opencv, we found a way to calculate this percentage of ocean pixels in python:
+Pork intends to reset Minecraft seeds efficiently for speedrunning. The initial approach to this project was using Python and TensorFlow Keras to feed screenshots of each instance into an image recognition machine learning model. This solution was far too inefficient for the project and did not find success in real-time usage. Once it was realized that efficiency was paramount for the project, we moved from a Python-based codebase to a Rust-based codebase. Using the Rust TensorFlow bindings the language provided didn't fit our project, so we looked for a new solution. We realized that the majority of good seeds have a high percentage of blue pixels because of their oceans. Using Opencv, we found a way to calculate this percentage of ocean pixels in python:
 
 ```python
 import cv2
@@ -173,3 +173,5 @@ Screenshot Filtered for Viewing
 ![Output Filtered Screenshot](assets/info_images/example3.png)
 
 To find the total percentage of the screen that is blue, we find the ratio of non-zero pixels in our HSV mask to the total image area. Multiplying this by 100, we have the percentage of the screen that is blue.
+
+
