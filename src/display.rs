@@ -1,3 +1,4 @@
+use std::path::Path;
 use crate::Instance;
 use ini::Ini;
 use screenshots::Screen;
@@ -28,6 +29,7 @@ impl Display {
                     number: col + ((row - 1) * self.cols),
                     img: Vec::new(),
                     path: String::new(),
+                    locked: false,
                 };
                 inst.path = format!("D:/MultiMC/instances/inst{}/.minecraft", inst.number);
                 self.instances.push(inst);
@@ -36,23 +38,28 @@ impl Display {
     }
     pub fn run(&mut self) {
         // Stores thread JoinHandles in thread_vec
-        let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
+        // let mut thread_vec = Vec::<std::thread::JoinHandle<()>>::new();
 
         self.get_instances();
 
-        for inst in &self.instances {
-            let hold_file = format!("{}{}", inst.path, "/hold.tmp");
-            if !std::path::Path::new(&hold_file).exists() {
-                let inst_thread = thread::spawn(|| &inst.eval());
-                thread_vec.push(inst_thread);
-                std::thread::sleep(std::time::Duration::from_millis(15));
+        loop {
+            for mut inst in self.instances.iter_mut() {
+                let hold_file = format!("{}{}", inst.path, "/hold.tmp");
+                if !inst.locked && !Path::new(&hold_file).exists() {
+                    // let inst_thread = thread::spawn(|| inst.eval());
+                    // thread_vec.push(inst_thread);
+                    inst.eval();
+                    std::thread::sleep(std::time::Duration::from_millis(15));
+                } else if inst.locked && !Path::new(&hold_file).exists() {
+                    inst.locked = false;
+                }
             }
-        }
 
 
-        // Joins all threads in vec
-        for thread in thread_vec {
-            thread.join().unwrap();
+            // Joins all threads in vec
+            // for thread in thread_vec {
+            //     thread.join().unwrap();
+            // }
         }
     }
 }

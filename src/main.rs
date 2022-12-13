@@ -17,7 +17,7 @@ use std::process;
 fn main() {
     let arg = env::args().nth(1).unwrap_or_default();
 
-    match arg.as_ref() {
+    match arg.to_lowercase().as_ref() {
         "help" | "h" => help(),
         "run" | "r" => run(),
         "" => welcome(),
@@ -37,12 +37,10 @@ fn run() {
 #[cfg(target_os = "windows")]
 fn run() {
     check_ini();
-    QKey.bind(|| process::exit(0));
-
-    PKey.bind(|| loop {
-        let display = Display::default();
-        let run_thread = thread::spawn(move || display.run());
-        run_thread.join().unwrap();
-    });
+    OKey.bind(|| process::exit(0));
+    MKey.bind(|| {
+        let mut display = Display::default();
+        display.run();
+    }); 
     inputbot::handle_input_events();
 }

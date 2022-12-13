@@ -1,5 +1,5 @@
-use enigo::{Enigo, MouseButton, MouseControllable};
-use std::fs;
+use enigo::{Enigo, MouseButton, MouseControllable, Key, KeyboardControllable};
+use std::{fs, collections::HashMap};
 use opencv::{
     core::{count_non_zero, in_range},
     imgcodecs, imgproc,
@@ -7,6 +7,7 @@ use opencv::{
 };
 use screenshots::Screen;
 use std::io::Read;
+
 
 pub struct Instance {
     pub x: i32,
@@ -16,6 +17,7 @@ pub struct Instance {
     pub number: u32,
     pub img: Vec<u8>,
     pub path: String,
+    pub locked: bool,
 }
 
 impl Instance {
@@ -37,7 +39,7 @@ impl Instance {
     }
     pub fn eval(&mut self) {
         let use_open_cv = false;
-        let blue_threshold = 5.0;
+        let blue_threshold = 7.0;
         let biomes = vec!["beach", "ocean"];
         let fringe_biomes = vec!["plains", "forest"];
 
@@ -53,10 +55,11 @@ impl Instance {
             }
         }
         println!("{}", biome);
-        if !biomes.contains(&biome.as_str()) && !biomes.contains(&biome.as_str()) {
+        if !biomes.contains(&biome.as_str()) && !fringe_biomes.contains(&biome.as_str()) {
             self.reset();
-        }
-        if fringe_biomes.contains(&biome.as_str()) {
+        } else if biomes.contains(&biome.as_str()) {
+            self.locked = true;
+        } else if fringe_biomes.contains(&biome.as_str()) {
             self.screenshot();
             let lower_blue = Mat::from_slice(&[100.0, 90.0, 0.0]).unwrap();
 
@@ -81,14 +84,30 @@ impl Instance {
             println!("{}: {}%", self.number, blue_percent);
             if blue_percent < blue_threshold {
                 self.reset();
+            } else {
+                self.locked = true;
             }
         }
     }
     fn reset(&self) {
-        let mut mouse = Enigo::new();
-        let center_x = self.x + (self.width / 2) as i32;
-        let center_y = self.y + (self.height / 2) as i32;
-        mouse.mouse_move_to(center_x, center_y);
-        mouse.mouse_click(MouseButton::Left);
+        let mut enigo = Enigo::new();
+        // let center_x = self.x + (self.width / 2) as i32;
+        // let center_y = self.y + (self.height / 2) as i32;
+        // enigo.mouse_move_to(center_x, center_y);
+        // enigo.mouse_click(MouseButton::Left);
+        let wall_keybinds: HashMap<u32, char> = HashMap::from([
+            (1, 'q'),
+            (2, 'w'),
+            (3, 'e'),
+            (4, 'a'),
+            (5, 's'),
+            (6, 'd'),
+        ]);
+        for (key, value) in &wall_keybinds {
+            println!("{}, {}", key, value);
+        }
+        // let inst_key = wall_keybinds.get(&self.number).unwrap();
+        // println!("{:?}", inst_key);
+        // enigo.key_click(Key::Layout(*inst_key));
     }
 }
