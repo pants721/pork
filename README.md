@@ -1,6 +1,6 @@
-# Pork <img src="assets/Porkchop.webp" height="30">
+# **DISCLAIMER**: Super duper deprecated
 
-**DISCLAIMER**: Super duper deprecated
+# Pork <img src="assets/Porkchop.webp" height="30">
 
 Pants OpenCV Reset Kit
 A project to efficently reset Minecraft seeds with opencv for speedrunning purposes.
