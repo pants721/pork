@@ -1,7 +1,8 @@
 # Pork <img src="assets/Porkchop.webp" height="30">
 
-Pants OpenCV Reset Kit\
-MEANT FOR EDUCATIONAL PURPOSES ONLY. DO NOT USE IN RUNS.
+**DISCLAIMER**: Super duper deprecated
+
+Pants OpenCV Reset Kit
 A project to efficently reset Minecraft seeds with opencv for speedrunning purposes.
 
 This project is meant to be used along side [Specnr's Wall project](https://github.com/Specnr/MultiResetWall).\
